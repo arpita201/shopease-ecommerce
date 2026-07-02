@@ -1,16 +1,79 @@
-# React + Vite
+# ShopEase Ecommerce Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive Ecommerce Website built with React JS. The project includes Home, Products, Product Details, and Cart pages with a clean and responsive user interface.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Responsive Navigation Bar
+- Home Page
+- Products Listing Page
+- Product Details Page
+- Shopping Cart Page
+- Responsive Design
+- React Router Navigation
+- Reusable Components
+- Clean User Interface
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Technologies Used
+
+- React JS
+- React Router DOM
+- JavaScript (ES6)
+- HTML5
+- CSS3
+- Vite
+- Git
+- GitHub
+
+
+## Development Environment
+
+- Visual Studio Code
+- Node.js
+- Vite
+- Git
+- GitHub
+- Google Chrome
+
+
+## Installation
+
+Clone the repository
+
+bash
+git clone https://github.com/arpita201/ecommerce-week1.git
+
+
+Go to the project folder
+
+bash
+cd ecommerce-week1
+
+
+Install dependencies
+
+`bash
+npm install
+
+
+Run the project
+
+bash
+npm run dev
+## Future Improvements
+
+- User Authentication
+- Backend Integration
+- Search and Filtering
+- Wishlist Feature
+- Online Payment Gateway
+- Improved UI/UX
+---
+
+## GitHub Repository
+
+https://github.com/arpita201/ecommerce-week1
