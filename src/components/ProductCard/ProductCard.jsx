@@ -1,25 +1,27 @@
+import { Link } from "react-router-dom";
+
 function ProductCard({ product }) {
   return (
-    <div
-      className="product-card"
-      style={{
-        border: "1px solid #ddd",
-        textAlign: "center",
-        padding: "20px",
-      }}
-    >
-      <img
-        src={product.image}
-        alt={product.name}
-        style={{
-          width: "180px",
-          height: "180px",
-          objectFit: "cover",
-        }}
-      />
+    <div className="product-card">
+      <img src={product.image} alt={product.name} />
 
       <h3>{product.name}</h3>
-      <p>{product.price}</p>
+
+      <h4>${product.price}</h4>
+
+      <p>{product.category}</p>
+
+      <p className={product.stock ? "in-stock" : "out-stock"}>
+        {product.stock ? "✅ In Stock" : "❌ Out of Stock"}
+      </p>
+
+      <div className="card-actions">
+        <Link to={`/details/${product.id}`}>
+          <button className="details-btn">View Details</button>
+        </Link>
+
+        <button className="cart-btn">Add to Cart</button>
+      </div>
     </div>
   );
 }

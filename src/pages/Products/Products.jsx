@@ -1,51 +1,110 @@
-const products = [
-  "Canon Camera EOS 2000",
-  "GoPro HERO6 Camera",
-  "Apple Watch Series",
-  "Gaming Headset",
-  "Laptop Pro",
-  "Smartphone",
-];
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import productsData from "../../data/products.json";
 
-function Products() {
+function Products({ addToCart }) {
+  const [products] = useState(productsData);
+  const [searchText, setSearchText] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  // Get unique categories from product data
+  const categories = ["All", ...new Set(products.map((product) => product.category))];
+
+  // Search and category filter together
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch = product.name
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
+
+    const matchesCategory =
+      selectedCategory === "All" || product.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
+
   return (
     <main className="listing-page">
       <aside className="filter-sidebar">
         <h3>Category</h3>
-        <p>Mobile accessory</p>
-        <p>Electronics</p>
-        <p>Smartphones</p>
-        <p>Modern tech</p>
 
-        <h3>Brands</h3>
-        <p>Samsung</p>
-        <p>Apple</p>
-        <p>Huawei</p>
-        <p>Lenovo</p>
+        {categories.map((category) => (
+          <p
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+            style={{
+              cursor: "pointer",
+              fontWeight: selectedCategory === category ? "bold" : "normal",
+              color: selectedCategory === category ? "#127fff" : "#606060",
+            }}
+          >
+            {category}
+          </p>
+        ))}
       </aside>
 
       <section className="listing-content">
-        <h2>12,911 items in Mobile accessory</h2>
+        <div className="search-filter-box">
+          <input
+            type="text"
+            placeholder="Search products by name..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <h2>{filteredProducts.length} Products Found</h2>
 
         <div className="listing-products">
-          {products.map((item, index) => (
-            <div className="listing-card" key={index}>
-              <div className="listing-img">
-                <img
-                  src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500"
-                  alt="Product"
-                />
-              </div>
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <div className="listing-card" key={product.id}>
+                <div className="listing-img">
+                  <img src={product.image} alt={product.name} />
+                </div>
 
-              <div>
-                <h3>{item}</h3>
-                <h2>$998.00</h2>
-                <p>7.5 · 154 orders · Free Shipping</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                <button>View details</button>
+                <div>
+                  <h3>{product.name}</h3>
+
+                  <h2>${product.price}</h2>
+
+                  <p>
+                    <strong>Category:</strong> {product.category}
+                  </p>
+
+                  <p>{product.description}</p>
+
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    {product.stock ? "In Stock" : "Out of Stock"}
+                  </p>
+
+                  <Link to={`/details/${product.id}`}>
+                    <button>View Details</button>
+                  </Link>
+
+                 <button
+  style={{ marginLeft: "10px" }}
+  onClick={() => addToCart(product)}
+>
+  Add to Cart
+</button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No products found.</p>
+          )}
         </div>
       </section>
     </main>

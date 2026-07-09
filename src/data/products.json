@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "name": "Smart Watch",
+    "price": 19,
+    "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",
+    "description": "A modern smart watch with fitness tracking and notification features.",
+    "category": "Electronics",
+    "stock": true
+  },
+  {
+    "id": 2,
+    "name": "Laptop Pro",
+    "price": 340,
+    "image": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500",
+    "description": "A powerful laptop suitable for study, work, and daily productivity.",
+    "category": "Electronics",
+    "stock": true
+  },
+  {
+    "id": 3,
+    "name": "Wireless Headphones",
+    "price": 25,
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
+    "description": "Comfortable wireless headphones with clear sound quality.",
+    "category": "Electronics",
+    "stock": true
+  },
+  {
+    "id": 4,
+    "name": "Digital Camera",
+    "price": 89,
+    "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500",
+    "description": "A compact digital camera for photography and travel.",
+    "category": "Electronics",
+    "stock": true
+  },
+  {
+    "id": 5,
+    "name": "Running Shoes",
+    "price": 45,
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500",
+    "description": "Lightweight running shoes designed for comfort and durability.",
+    "category": "Shoes",
+    "stock": true
+  },
+  {
+    "id": 6,
+    "name": "Cotton T-Shirt",
+    "price": 15,
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500",
+    "description": "Soft cotton t-shirt suitable for casual wear.",
+    "category": "Clothing",
+    "stock": true
+  },
+  {
+    "id": 7,
+    "name": "Backpack",
+    "price": 30,
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+    "description": "Durable backpack with multiple storage compartments.",
+    "category": "Accessories",
+    "stock": true
+  },
+  {
+    "id": 8,
+    "name": "Coffee Maker",
+    "price": 55,
+    "image": "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=500",
+    "description": "Easy-to-use coffee maker for home and office use.",
+    "category": "Home",
+    "stock": true
+  },
+  {
+    "id": 9,
+    "name": "Office Chair",
+    "price": 75,
+    "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500",
+    "description": "Comfortable office chair with ergonomic support.",
+    "category": "Home",
+    "stock": false
+  },
+  {
+    "id": 10,
+    "name": "Smartphone",
+    "price": 299,
+    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500",
+    "description": "Modern smartphone with a high-quality display and camera.",
+    "category": "Electronics",
+    "stock": true
+  }
+]

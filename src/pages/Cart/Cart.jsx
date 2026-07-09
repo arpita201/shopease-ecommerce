@@ -1,41 +1,53 @@
-function Cart() {
+function Cart({ cartItems, removeFromCart, updateQty }) {
+  const subtotal = cartItems.reduce(
+    (total, item) => total + item.price * item.qty,
+    0
+  );
+
+  const discount = cartItems.length > 0 ? 20 : 0;
+  const tax = cartItems.length > 0 ? 10 : 0;
+  const total = subtotal - discount + tax;
+
   return (
     <main className="cart-page">
-      <h1>My Cart (3)</h1>
+      <h1>My Cart ({cartItems.length})</h1>
 
       <section className="cart-layout">
         <div className="cart-items">
-          {[
-            "T-shirts with multiple colors",
-            "Mens Long Sleeve T-shirt",
-            "GoPro HERO6 Camera",
-          ].map((item, index) => (
-            <div className="cart-item" key={index}>
-              <div className="cart-img">
-                <img
-                  src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500"
-                  alt={item}
-                />
-              </div>
+          {cartItems.length === 0 ? (
+            <h2>Your cart is empty.</h2>
+          ) : (
+            cartItems.map((item) => (
+              <div className="cart-item" key={item.id}>
+                <div className="cart-img">
+                  <img src={item.image} alt={item.name} />
+                </div>
 
-              <div>
-                <h3>{item}</h3>
-                <p>Size: Medium, Color: Blue, Material: Plastic</p>
-                <p>Seller: Artel Market</p>
-                <button>Remove</button>
-                <button style={{ marginLeft: "10px" }}>Save for later</button>
-              </div>
+                <div>
+                  <h3>{item.name}</h3>
+                  <p>Category: {item.category}</p>
+                  <p>Seller: ShopEase Store</p>
 
-              <div>
-                <h3>$78.99</h3>
-                <select>
-                  <option>Qty: 1</option>
-                  <option>Qty: 2</option>
-                  <option>Qty: 3</option>
-                </select>
+                  <button onClick={() => removeFromCart(item.id)}>
+                    Remove
+                  </button>
+                </div>
+
+                <div>
+                  <h3>${item.price * item.qty}</h3>
+
+                  <select
+                    value={item.qty}
+                    onChange={(e) => updateQty(item.id, e.target.value)}
+                  >
+                    <option value="1">Qty: 1</option>
+                    <option value="2">Qty: 2</option>
+                    <option value="3">Qty: 3</option>
+                  </select>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <aside className="summary-card">
@@ -45,11 +57,11 @@ function Cart() {
 
           <hr />
 
-          <p>Subtotal: $1403.97</p>
-          <p>Discount: - $60.00</p>
-          <p>Tax: + $14.00</p>
+          <p>Subtotal: ${subtotal}</p>
+          <p>Discount: - ${discount}</p>
+          <p>Tax: + ${tax}</p>
 
-          <h2>Total: $1357.97</h2>
+          <h2>Total: ${total}</h2>
           <button className="checkout-btn">Checkout</button>
         </aside>
       </section>

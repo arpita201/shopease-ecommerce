@@ -1,28 +1,39 @@
+import { Link } from "react-router-dom";
+
 function Hero() {
   return (
     <section
       style={{
-        padding: "80px 20px",
+        padding: "90px 20px",
         textAlign: "center",
-        background: "#f5f5f5",
+        background: "linear-gradient(135deg, #f3f8ff, #ffffff)",
       }}
     >
-      <h1 style={{ fontSize: "48px" }}>Welcome to ShopEase</h1>
-      <p>Discover the latest fashion at the best prices.</p>
+      <h1 style={{ fontSize: "52px", marginBottom: "12px" }}>
+        Welcome to ShopEase
+      </h1>
 
-      <button
-        style={{
-          marginTop: "20px",
-          padding: "12px 30px",
-          background: "#000",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
-        Shop Now
-      </button>
+      <p style={{ fontSize: "18px", color: "#555" }}>
+        Discover quality products at the best prices.
+      </p>
+
+      <Link to="/products">
+        <button
+          style={{
+            marginTop: "25px",
+            padding: "14px 36px",
+            background: "#127FFF",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontSize: "16px",
+            fontWeight: "600",
+          }}
+        >
+          Shop Now
+        </button>
+      </Link>
     </section>
   );
 }

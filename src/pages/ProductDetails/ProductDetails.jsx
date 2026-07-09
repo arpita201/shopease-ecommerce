@@ -1,56 +1,67 @@
-function ProductDetails() {
+import { useParams } from "react-router-dom";
+import productsData from "../../data/products.json";
+
+function ProductDetails({ addToCart }) {
+  const { id } = useParams();
+
+  const product = productsData.find((item) => item.id === Number(id));
+
+  if (!product) {
+    return (
+      <main className="details-page">
+        <h2>Product not found</h2>
+      </main>
+    );
+  }
+
   return (
     <main className="details-page">
       <section className="details-card">
-
         <div className="details-img">
-          <img
-            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700"
-            alt="Product"
-          />
+          <img src={product.image} alt={product.name} />
         </div>
 
         <div className="details-info">
-          <p className="stock">In stock</p>
+          <p className={product.stock ? "stock" : "out-stock"}>
+            {product.stock ? "In Stock" : "Out of Stock"}
+          </p>
 
-          <h1>Mens Long Sleeve T-shirt Cotton Base Layer Slim Muscle</h1>
+          <h1>{product.name}</h1>
 
-          <p>  7.5 · 154 orders · Free Shipping</p>
+          <p>⭐ 7.5 · 154 orders · Free Shipping</p>
 
           <div className="price-box">
-            <h2>$98.00</h2>
-            <p>50-100 pcs</p>
+            <h2>${product.price}</h2>
+            <p>Best price available</p>
           </div>
 
-          <p><strong>Price:</strong> Negotiable</p>
-          <p><strong>Type:</strong> Classic shoes</p>
-          <p><strong>Material:</strong> Plastic material</p>
-          <p><strong>Design:</strong> Modern nice</p>
+          <p>
+            <strong>Category:</strong> {product.category}
+          </p>
 
-          <button>Send inquiry</button>
+          <p>
+            <strong>Description:</strong> {product.description}
+          </p>
+<button onClick={() => addToCart(product)}>
+  Add to Cart
+</button>
         </div>
 
         <aside className="seller-card">
           <h3>Supplier</h3>
-          <p>Guanjoi Trading LLC</p>
-          <p>Germany, Berlin</p>
+          <p>ShopEase Trading LLC</p>
+          <p>Verified Seller</p>
 
           <button>Send inquiry</button>
 
-          <button className="outline-btn">
-            Seller profile
-          </button>
+          <button className="outline-btn">Seller profile</button>
         </aside>
-
       </section>
 
       <section className="description-section">
-        <h2>Description</h2>
+        <h2>Product Description</h2>
 
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
+        <p>{product.description}</p>
       </section>
     </main>
   );
