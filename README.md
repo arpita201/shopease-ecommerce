@@ -1,39 +1,16 @@
-# 🛍️ ShopEase Ecommerce Website
+# 🛒 ShopEase Ecommerce Website
 
-A modern and responsive Ecommerce Website built with **React JS** and **Vite**. This project demonstrates a complete frontend shopping experience with dynamic product rendering, search, category filtering, product details, and shopping cart functionality.
-
----
-
-## 🚀 Live Features
-
-### ✅ Week 1 Features
-- Responsive Navigation Bar
-- Home Page
-- Products Listing Page
-- Product Details Page
-- Shopping Cart Page
-- Responsive Layout
-- React Router Navigation
-- Reusable Components
-- Clean UI Design
-
-### ✅ Week 2 Features
-- Dynamic Product Rendering using JSON
-- Product Details using Dynamic Route
-- Search Products by Name
-- Category Filter
-- Search + Filter Combined
-- Add to Cart Button
-- Remove Item from Cart
-- Quantity Update
-- Dynamic Price Calculation
-- Dynamic Subtotal
-- Dynamic Total Price
-- Responsive Design
+A modern React-based Ecommerce Website developed as part of the Frontend Development Internship. This project was built incrementally over multiple weeks by adding new features and improving the application.
 
 ---
 
-# 🛠 Technologies Used
+# 📌 Project Overview
+
+ShopEase is a responsive ecommerce website where users can browse products, search and filter items, view product details, and manage their shopping cart. The project uses local JSON data and React Context API for state management.
+
+---
+
+# 🚀 Technologies Used
 
 - React JS
 - React Router DOM
@@ -41,143 +18,164 @@ A modern and responsive Ecommerce Website built with **React JS** and **Vite**. 
 - HTML5
 - CSS3
 - JSON
+- Context API
+- localStorage
+- React Toastify
 - Vite
-- Git
-- GitHub
+- Git & GitHub
 
 ---
 
-# 📁 Project Structure
+# ✅ Week 1 Features
+
+- Responsive Home Page
+- Products Page
+- Product Details Page
+- Shopping Cart UI
+- Navbar
+- Footer
+- Hero Section
+- Product Cards
+- Figma-based Design
+
+---
+
+# ✅ Week 2 Features
+
+- Dynamic Product Rendering
+- products.json Integration
+- React Router Navigation
+- Search Functionality
+- Category Filter
+- Dynamic Product Details Page
+- Improved UI & Layout
+
+---
+
+# ✅ Week 3 Features
+
+- Add to Cart Functionality
+- Quantity Increase & Decrease
+- Remove Item from Cart
+- Dynamic Total Price Calculation
+- Global State Management using Context API
+- Persistent Cart using localStorage
+- Navbar Cart Badge
+- Toast Notification
+- Go Back Button
+- Responsive Cart Page
+
+---
+
+# 📂 Folder Structure
 
 ```
-src
+src/
 │
-├── components
-│   ├── Hero
-│   ├── Navbar
-│   ├── ProductCard
-│   └── Footer
+├── components/
+│   ├── Navbar/
+│   ├── Footer/
+│   ├── Hero/
+│   └── ProductCard/
 │
-├── data
+├── context/
+│   └── CartContext.jsx
+│
+├── data/
 │   └── products.json
 │
-├── pages
-│   ├── Home
-│   ├── Products
-│   ├── ProductDetails
-│   └── Cart
+├── pages/
+│   ├── Home/
+│   ├── Products/
+│   ├── ProductDetails/
+│   └── Cart/
 │
 ├── App.jsx
-└── main.jsx
+├── main.jsx
+└── index.css
 ```
 
 ---
 
 # 📸 Screenshots
 
-## 🏠 Home Page
+## Week 2
 
-![Home](screenshots/home-page.png)
+### Home Page
 
----
+![Home](screenshots/home.png)
 
-## 📦 Products Page
+### Products Page
 
-![Products](screenshots/products-page.png)
+![Products](screenshots/products.png)
 
----
+### Product Details
 
-## 🔍 Search Feature
-
-![Search](screenshots/search-feature.png)
+![Details](screenshots/details.png)
 
 ---
 
-## 🗂 Category Filter
+## Week 3
 
-![Category Filter](screenshots/category-filter.png)
+### Products Page
 
----
+![Products](screenshots/week3-products-page.png)
 
-## 📄 Product Details
+### Product Details
 
-![Product Details](screenshots/product-details.png)
+![Product Details](screenshots/week3-product-details.png)
 
----
+### Add to Cart Toast
 
-## 🛒 Shopping Cart
+![Toast](screenshots/week3-add-to-cart-toast.png)
 
-![Cart](screenshots/cart-page.png)
+### Shopping Cart
 
----
+![Cart](screenshots/week3-cart-page.png)
 
-# ⚙️ Installation
+### Quantity Update
 
-### Clone the repository
+![Quantity](screenshots/week3-quantity-update.png)
 
-```bash
-git clone https://github.com/arpita201/shopease-ecommerce.git
-```
+### Empty Cart
 
-### Go to project folder
-
-```bash
-cd shopease-ecommerce
-```
-
-### Install dependencies
-
-```bash
-npm install
-```
-
-### Run the project
-
-```bash
-npm run dev
-```
+![Empty Cart](screenshots/week3-empty-cart.png)
 
 ---
 
-# 📚 What I Learned
+# 📚 Learning Outcomes
 
 - React Components
-- Props
 - React Router
-- Dynamic Routing
-- JSON Data Rendering
-- Search Functionality
-- Category Filtering
-- React State (useState)
-- Array Methods (map, filter)
-- Responsive UI Design
+- Dynamic Rendering
+- Context API
+- localStorage
+- State Management
+- Responsive Design
 - Git & GitHub Workflow
 
 ---
 
-# 🚀 Future Improvements
+# 🔮 Future Improvements
 
 - User Authentication
 - Wishlist
-- Backend Integration
-- Database Support
 - Payment Gateway
+- Backend Integration
 - Order History
 - Product Reviews
-- Local Storage Cart
-- API Integration
 
 ---
 
-# 👩‍💻 Developed By
+# 👩‍💻 Author
 
 **Arpita Saha**
 
 
 
-GitHub: https://github.com/arpita201
-
-Repository:
-https://github.com/arpita201/shopease-ecommerce
+GitHub:
+https://github.com/arpita201
 
 ---
+
+
