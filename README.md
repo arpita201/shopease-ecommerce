@@ -102,46 +102,45 @@ src/
 ## Week 2
 
 ### Home Page
-
-![Home](screenshots/home.png)
+![Home](screenshots/home-page.png)
 
 ### Products Page
-
-![Products](screenshots/products.png)
+![Products](screenshots/products-page.png)
 
 ### Product Details
+![Product Details](screenshots/product-details.png)
 
-![Details](screenshots/details.png)
+### Search Feature
+![Search](screenshots/search-feature.png)
+
+### Category Filter
+![Category Filter](screenshots/category-filter.png)
+
+### Cart Page
+![Cart](screenshots/cart-page.png)
 
 ---
 
 ## Week 3
 
 ### Products Page
-
 ![Products](screenshots/week3-products-page.png)
 
 ### Product Details
-
 ![Product Details](screenshots/week3-product-details.png)
 
 ### Add to Cart Toast
-
 ![Toast](screenshots/week3-add-to-cart-toast.png)
 
 ### Shopping Cart
-
-![Cart](screenshots/week3-cart-page.png)
+![Shopping Cart](screenshots/week3-cart-page.png)
 
 ### Quantity Update
-
-![Quantity](screenshots/week3-quantity-update.png)
+![Quantity Update](screenshots/week3-quantity-update.png)
 
 ### Empty Cart
-
 ![Empty Cart](screenshots/week3-empty-cart.png)
 
----
 
 # 📚 Learning Outcomes
 
