@@ -17,10 +17,10 @@ function ProductCard({ product }) {
 
       <div className="card-actions">
         <Link to={`/details/${product.id}`}>
-          <button className="details-btn">View Details</button>
+          <button className="details-btn">
+            View Details
+          </button>
         </Link>
-
-        <button className="cart-btn">Add to Cart</button>
       </div>
     </div>
   );

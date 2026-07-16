@@ -1,21 +1,47 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import productsData from "../../data/products.json";
+import { useCart } from "../../context/CartContext";
 
-function ProductDetails({ addToCart }) {
+function ProductDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
 
-  const product = productsData.find((item) => item.id === Number(id));
+  const product = productsData.find(
+    (item) => item.id === Number(id)
+  );
 
   if (!product) {
     return (
       <main className="details-page">
+        <button
+          onClick={() => navigate(-1)}
+          className="back-btn"
+        >
+          ← Go Back
+        </button>
+
         <h2>Product not found</h2>
       </main>
     );
   }
 
+  const handleAddToCart = () => {
+    addToCart(product);
+    toast.success(`${product.name} added to cart!`);
+  };
+
   return (
     <main className="details-page">
+      <button
+        onClick={() => navigate(-1)}
+        className="back-btn"
+      >
+        ← Go Back
+      </button>
+
       <section className="details-card">
         <div className="details-img">
           <img src={product.image} alt={product.name} />
@@ -42,9 +68,13 @@ function ProductDetails({ addToCart }) {
           <p>
             <strong>Description:</strong> {product.description}
           </p>
-<button onClick={() => addToCart(product)}>
-  Add to Cart
-</button>
+
+          <button
+            onClick={handleAddToCart}
+            disabled={!product.stock}
+          >
+            {product.stock ? "Add to Cart" : "Out of Stock"}
+          </button>
         </div>
 
         <aside className="seller-card">
@@ -54,13 +84,14 @@ function ProductDetails({ addToCart }) {
 
           <button>Send inquiry</button>
 
-          <button className="outline-btn">Seller profile</button>
+          <button className="outline-btn">
+            Seller profile
+          </button>
         </aside>
       </section>
 
       <section className="description-section">
         <h2>Product Description</h2>
-
         <p>{product.description}</p>
       </section>
     </main>

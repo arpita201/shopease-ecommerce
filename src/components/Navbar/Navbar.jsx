@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
 
 function Navbar() {
+  const { cartCount } = useCart();
+
   return (
     <nav
       style={{
@@ -29,12 +32,44 @@ function Navbar() {
         style={{
           display: "flex",
           gap: "30px",
+          alignItems: "center",
           fontWeight: "500",
         }}
       >
         <Link to="/">Home</Link>
         <Link to="/products">Products</Link>
-        <Link to="/cart">Cart</Link>
+
+        <Link
+          to="/cart"
+          style={{
+            position: "relative",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+          }}
+        >
+          Cart
+
+          {cartCount > 0 && (
+            <span
+              style={{
+                minWidth: "22px",
+                height: "22px",
+                padding: "0 6px",
+                borderRadius: "999px",
+                background: "#127FFF",
+                color: "#fff",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "12px",
+                fontWeight: "700",
+              }}
+            >
+              {cartCount}
+            </span>
+          )}
+        </Link>
       </div>
     </nav>
   );

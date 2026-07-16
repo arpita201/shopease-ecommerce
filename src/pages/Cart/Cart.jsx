@@ -1,29 +1,43 @@
-function Cart({ cartItems, removeFromCart, updateQty }) {
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.qty,
-    0
-  );
+import { Link } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
+
+function Cart() {
+  const {
+    cartItems,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
+    cartCount,
+    cartTotal,
+  } = useCart();
 
   const discount = cartItems.length > 0 ? 20 : 0;
   const tax = cartItems.length > 0 ? 10 : 0;
-  const total = subtotal - discount + tax;
+  const finalTotal = cartTotal - discount + tax;
 
   return (
     <main className="cart-page">
-      <h1>My Cart ({cartItems.length})</h1>
+      <h1>My Cart ({cartCount})</h1>
 
-      <section className="cart-layout">
-        <div className="cart-items">
-          {cartItems.length === 0 ? (
-            <h2>Your cart is empty.</h2>
-          ) : (
-            cartItems.map((item) => (
+      {cartItems.length === 0 ? (
+        <section className="empty-cart">
+          <h2>Your cart is empty.</h2>
+          <p>Add some products to continue shopping.</p>
+
+          <Link to="/products">
+            <button>Go to Products</button>
+          </Link>
+        </section>
+      ) : (
+        <section className="cart-layout">
+          <div className="cart-items">
+            {cartItems.map((item) => (
               <div className="cart-item" key={item.id}>
                 <div className="cart-img">
                   <img src={item.image} alt={item.name} />
                 </div>
 
-                <div>
+                <div className="cart-item-info">
                   <h3>{item.name}</h3>
                   <p>Category: {item.category}</p>
                   <p>Seller: ShopEase Store</p>
@@ -33,38 +47,48 @@ function Cart({ cartItems, removeFromCart, updateQty }) {
                   </button>
                 </div>
 
-                <div>
-                  <h3>${item.price * item.qty}</h3>
+                <div className="cart-item-controls">
+                  <h3>${(item.price * item.quantity).toFixed(2)}</h3>
 
-                  <select
-                    value={item.qty}
-                    onChange={(e) => updateQty(item.id, e.target.value)}
-                  >
-                    <option value="1">Qty: 1</option>
-                    <option value="2">Qty: 2</option>
-                    <option value="3">Qty: 3</option>
-                  </select>
+                  <div className="quantity-controls">
+                    <button
+                      onClick={() => decreaseQuantity(item.id)}
+                    >
+                      −
+                    </button>
+
+                    <span>{item.quantity}</span>
+
+                    <button
+                      onClick={() => increaseQuantity(item.id)}
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
 
-        <aside className="summary-card">
-          <h3>Have a coupon?</h3>
-          <input type="text" placeholder="Add coupon" />
-          <button>Apply</button>
+          <aside className="summary-card">
+            <h3>Have a coupon?</h3>
+            <input type="text" placeholder="Add coupon" />
+            <button>Apply</button>
 
-          <hr />
+            <hr />
 
-          <p>Subtotal: ${subtotal}</p>
-          <p>Discount: - ${discount}</p>
-          <p>Tax: + ${tax}</p>
+            <p>Subtotal: ${cartTotal.toFixed(2)}</p>
+            <p>Discount: - ${discount.toFixed(2)}</p>
+            <p>Tax: + ${tax.toFixed(2)}</p>
 
-          <h2>Total: ${total}</h2>
-          <button className="checkout-btn">Checkout</button>
-        </aside>
-      </section>
+            <h2>Total: ${finalTotal.toFixed(2)}</h2>
+
+            <button className="checkout-btn">
+              Checkout
+            </button>
+          </aside>
+        </section>
+      )}
     </main>
   );
 }

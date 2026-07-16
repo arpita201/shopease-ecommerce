@@ -1,23 +1,29 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import productsData from "../../data/products.json";
+import { useCart } from "../../context/CartContext";
+import { toast } from "react-toastify";
 
-function Products({ addToCart }) {
+function Products() {
   const [products] = useState(productsData);
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  // Get unique categories from product data
-  const categories = ["All", ...new Set(products.map((product) => product.category))];
+  const { addToCart } = useCart();
 
-  // Search and category filter together
+  const categories = [
+    "All",
+    ...new Set(products.map((product) => product.category)),
+  ];
+
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name
       .toLowerCase()
       .includes(searchText.toLowerCase());
 
     const matchesCategory =
-      selectedCategory === "All" || product.category === selectedCategory;
+      selectedCategory === "All" ||
+      product.category === selectedCategory;
 
     return matchesSearch && matchesCategory;
   });
@@ -33,8 +39,10 @@ function Products({ addToCart }) {
             onClick={() => setSelectedCategory(category)}
             style={{
               cursor: "pointer",
-              fontWeight: selectedCategory === category ? "bold" : "normal",
-              color: selectedCategory === category ? "#127fff" : "#606060",
+              fontWeight:
+                selectedCategory === category ? "bold" : "normal",
+              color:
+                selectedCategory === category ? "#127fff" : "#606060",
             }}
           >
             {category}
@@ -75,7 +83,6 @@ function Products({ addToCart }) {
 
                 <div>
                   <h3>{product.name}</h3>
-
                   <h2>${product.price}</h2>
 
                   <p>
@@ -90,14 +97,18 @@ function Products({ addToCart }) {
                   </p>
 
                   <Link to={`/details/${product.id}`}>
-                    <button>View Details</button>
-                  </Link>
+  <button>View Details</button>
+</Link>
 
-                 <button
+<button
   style={{ marginLeft: "10px" }}
-  onClick={() => addToCart(product)}
+  onClick={() => {
+    addToCart(product);
+    toast.success(`${product.name} added to cart!`);
+  }}
+  disabled={!product.stock}
 >
-  Add to Cart
+  {product.stock ? "Add to Cart" : "Out of Stock"}
 </button>
                 </div>
               </div>
