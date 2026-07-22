@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 
 function Cart() {
+  const navigate = useNavigate();
+
   const {
     cartItems,
     increaseQuantity,
@@ -14,6 +16,18 @@ function Cart() {
   const discount = cartItems.length > 0 ? 20 : 0;
   const tax = cartItems.length > 0 ? 10 : 0;
   const finalTotal = cartTotal - discount + tax;
+
+  const handleCheckout = () => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+    if (isLoggedIn === "true") {
+      navigate("/checkout");
+    } else {
+      navigate("/login", {
+        state: { from: "/checkout" },
+      });
+    }
+  };
 
   return (
     <main className="cart-page">
@@ -51,17 +65,13 @@ function Cart() {
                   <h3>${(item.price * item.quantity).toFixed(2)}</h3>
 
                   <div className="quantity-controls">
-                    <button
-                      onClick={() => decreaseQuantity(item.id)}
-                    >
+                    <button onClick={() => decreaseQuantity(item.id)}>
                       −
                     </button>
 
                     <span>{item.quantity}</span>
 
-                    <button
-                      onClick={() => increaseQuantity(item.id)}
-                    >
+                    <button onClick={() => increaseQuantity(item.id)}>
                       +
                     </button>
                   </div>
@@ -83,7 +93,11 @@ function Cart() {
 
             <h2>Total: ${finalTotal.toFixed(2)}</h2>
 
-            <button className="checkout-btn">
+            <button
+              type="button"
+              className="checkout-btn"
+              onClick={handleCheckout}
+            >
               Checkout
             </button>
           </aside>

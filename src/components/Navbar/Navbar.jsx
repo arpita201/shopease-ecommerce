@@ -1,8 +1,28 @@
-import { Link } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 
 function Navbar() {
+  const navigate = useNavigate();
   const { cartCount } = useCart();
+
+  const isLoggedIn =
+    localStorage.getItem("isLoggedIn") === "true";
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    navigate("/");
+    window.location.reload();
+  };
+
+  const navStyle = ({ isActive }) => ({
+    textDecoration: "none",
+    padding: "8px 16px",
+    borderRadius: "8px",
+    fontWeight: "600",
+    transition: "0.3s",
+    background: isActive ? "#127FFF" : "transparent",
+    color: isActive ? "#fff" : "#333",
+  });
 
   return (
     <nav
@@ -11,54 +31,65 @@ function Navbar() {
         justifyContent: "space-between",
         alignItems: "center",
         padding: "18px 60px",
-        background: "#ffffff",
+        background: "#fff",
         borderBottom: "1px solid #e5e7eb",
         position: "sticky",
         top: 0,
         zIndex: 1000,
       }}
     >
-      <h2
-        style={{
-          color: "#127FFF",
-          fontWeight: "700",
-          margin: 0,
-        }}
+      <NavLink
+        to="/"
+        style={{ textDecoration: "none" }}
       >
-        ShopEase
-      </h2>
+        <h2
+          style={{
+            color: "#127FFF",
+            margin: 0,
+            fontWeight: "700",
+          }}
+        >
+          ShopEase
+        </h2>
+      </NavLink>
 
       <div
         style={{
           display: "flex",
-          gap: "30px",
           alignItems: "center",
-          fontWeight: "500",
+          gap: "12px",
         }}
       >
-        <Link to="/">Home</Link>
-        <Link to="/products">Products</Link>
+        <NavLink to="/" style={navStyle}>
+          Home
+        </NavLink>
 
-        <Link
+        <NavLink to="/products" style={navStyle}>
+          Products
+        </NavLink>
+
+        <NavLink to="/login" style={navStyle}>
+          Login
+        </NavLink>
+
+        <NavLink to="/signup" style={navStyle}>
+          Signup
+        </NavLink>
+
+        <NavLink
           to="/cart"
-          style={{
-            position: "relative",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "6px",
-          }}
+          style={navStyle}
         >
           Cart
-
           {cartCount > 0 && (
             <span
               style={{
-                minWidth: "22px",
-                height: "22px",
-                padding: "0 6px",
-                borderRadius: "999px",
-                background: "#127FFF",
-                color: "#fff",
+                marginLeft: "6px",
+                background: "#fff",
+                color: "#127FFF",
+                borderRadius: "50%",
+                minWidth: "20px",
+                height: "20px",
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -69,7 +100,24 @@ function Navbar() {
               {cartCount}
             </span>
           )}
-        </Link>
+        </NavLink>
+
+        {isLoggedIn && (
+          <button
+            onClick={handleLogout}
+            style={{
+              border: "none",
+              background: "#dc3545",
+              color: "#fff",
+              padding: "8px 16px",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontWeight: "600",
+            }}
+          >
+            Logout
+          </button>
+        )}
       </div>
     </nav>
   );
