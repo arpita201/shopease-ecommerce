@@ -65,6 +65,25 @@ ShopEase is a responsive ecommerce website where users can browse products, sear
 - Go Back Button
 - Responsive Cart Page
 
+# ✅ Week 4 Features
+
+- Login Page
+- Signup Page
+- Show / Hide Password
+- Frontend Form Validation
+- Email Validation
+- Password Validation
+- Confirm Password Validation
+- Checkout Page
+- Shipping Information Form
+- Order Summary
+- User Authentication using localStorage
+- Protected Checkout (Login Required)
+- Order Success Page
+- Logout Functionality
+- Active Navigation using NavLink
+- Responsive Login, Signup & Checkout Pages
+
 ---
 
 # 📂 Folder Structure
@@ -141,6 +160,28 @@ src/
 ### Empty Cart
 ![Empty Cart](screenshots/week3-empty-cart.png)
 
+---
+
+## Week 4
+
+### Login Page
+![Login](screenshots/week4-login-page.png)
+
+### Login Validation
+![Login Validation](screenshots/week4-login-validation.png)
+
+### Signup Page
+![Signup](screenshots/week4-signup-page.png)
+
+### Signup Validation
+![Signup Validation](screenshots/week4-signup-validation.png)
+
+### Checkout & Order Summary
+![Checkout & Order Summary](screenshots/week4-checkout-page.png)
+
+### Order Success
+![Order Success](screenshots/week4-order-success.png)
+
 
 # 📚 Learning Outcomes
 
@@ -152,18 +193,22 @@ src/
 - State Management
 - Responsive Design
 - Git & GitHub Workflow
-
+- Form Validation
+- User Authentication
+- Protected Checkout Flow
+- Authentication using localStorage
 ---
 
 # 🔮 Future Improvements
 
-- User Authentication
+- Backend Authentication
+- Payment Gateway Integration
 - Wishlist
-- Payment Gateway
-- Backend Integration
+- User Profile
 - Order History
 - Product Reviews
-
+- Admin Dashboard
+- Backend & Database Integration
 ---
 
 # 👩‍💻 Author
