@@ -16,7 +16,7 @@ function ProductCard({ product }) {
       </p>
 
       <div className="card-actions">
-        <Link to={`/details/${product.id}`}>
+        <Link to={`/details/${product._id}`}>
           <button className="details-btn">
             View Details
           </button>

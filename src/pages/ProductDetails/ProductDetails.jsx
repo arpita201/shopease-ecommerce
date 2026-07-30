@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import productsData from "../../data/products.json";
 import { useCart } from "../../context/CartContext";
 
 function ProductDetails() {
@@ -9,11 +9,50 @@ function ProductDetails() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  const product = productsData.find(
-    (item) => item.id === Number(id)
-  );
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  if (!product) {
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        console.log("ID:", id);
+
+const response = await fetch(
+  `http://localhost:5000/api/products/${id}`
+);
+
+       
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error("Product not found.");
+          }
+
+          throw new Error("Failed to load product details.");
+        }
+
+        const data = await response.json();
+        setProduct(data);
+      } catch (err) {
+        setError(err.message || "Something went wrong.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    addToCart(product);
+    toast.success(`${product.name} added to cart!`);
+  };
+
+  if (loading) {
     return (
       <main className="details-page">
         <button
@@ -23,15 +62,25 @@ function ProductDetails() {
           ← Go Back
         </button>
 
-        <h2>Product not found</h2>
+        <h2>Loading product details...</h2>
       </main>
     );
   }
 
-  const handleAddToCart = () => {
-    addToCart(product);
-    toast.success(`${product.name} added to cart!`);
-  };
+  if (error || !product) {
+    return (
+      <main className="details-page">
+        <button
+          onClick={() => navigate(-1)}
+          className="back-btn"
+        >
+          ← Go Back
+        </button>
+
+        <h2>{error || "Product not found"}</h2>
+      </main>
+    );
+  }
 
   return (
     <main className="details-page">

@@ -1,15 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import productsData from "../../data/products.json";
 import { useCart } from "../../context/CartContext";
 import { toast } from "react-toastify";
 
 function Products() {
-  const [products] = useState(productsData);
+  const [products, setProducts] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const { addToCart } = useCart();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+          "http://localhost:5000/api/products"
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch products.");
+        }
+
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message || "Something went wrong.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const categories = [
     "All",
@@ -27,6 +54,27 @@ function Products() {
 
     return matchesSearch && matchesCategory;
   });
+
+  if (loading) {
+    return (
+      <main className="listing-page">
+        <section className="listing-content">
+          <h2>Loading products...</h2>
+        </section>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="listing-page">
+        <section className="listing-content">
+          <h2>Unable to load products</h2>
+          <p>{error}</p>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="listing-page">
@@ -76,7 +124,7 @@ function Products() {
         <div className="listing-products">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <div className="listing-card" key={product.id}>
+              <div className="listing-card" key={product._id}>
                 <div className="listing-img">
                   <img src={product.image} alt={product.name} />
                 </div>
@@ -96,20 +144,24 @@ function Products() {
                     {product.stock ? "In Stock" : "Out of Stock"}
                   </p>
 
-                  <Link to={`/details/${product.id}`}>
-  <button>View Details</button>
-</Link>
+                  <Link to={`/details/${product._id}`}>
+                    <button>View Details</button>
+                  </Link>
 
-<button
-  style={{ marginLeft: "10px" }}
-  onClick={() => {
-    addToCart(product);
-    toast.success(`${product.name} added to cart!`);
-  }}
-  disabled={!product.stock}
->
-  {product.stock ? "Add to Cart" : "Out of Stock"}
-</button>
+                  <button
+                    style={{ marginLeft: "10px" }}
+                    onClick={() => {
+                      addToCart(product);
+                      toast.success(
+                        `${product.name} added to cart!`
+                      );
+                    }}
+                    disabled={!product.stock}
+                  >
+                    {product.stock
+                      ? "Add to Cart"
+                      : "Out of Stock"}
+                  </button>
                 </div>
               </div>
             ))

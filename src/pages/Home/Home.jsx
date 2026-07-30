@@ -1,11 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Hero from "../../components/Hero/Hero";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import productsData from "../../data/products.json";
 
 function Home() {
-  const [products] = useState(productsData);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+          "http://localhost:5000/api/products"
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to load products.");
+        }
+
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message || "Something went wrong.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const dealProducts = products.slice(0, 4);
   const recommendedProducts = products.slice(0, 8);
@@ -21,17 +48,41 @@ function Home() {
           <p>Featured products</p>
 
           <div className="countdown">
-            <div><strong>04</strong><span>Days</span></div>
-            <div><strong>13</strong><span>Hour</span></div>
-            <div><strong>34</strong><span>Min</span></div>
-            <div><strong>56</strong><span>Sec</span></div>
+            <div>
+              <strong>04</strong>
+              <span>Days</span>
+            </div>
+
+            <div>
+              <strong>13</strong>
+              <span>Hour</span>
+            </div>
+
+            <div>
+              <strong>34</strong>
+              <span>Min</span>
+            </div>
+
+            <div>
+              <strong>56</strong>
+              <span>Sec</span>
+            </div>
           </div>
         </div>
 
         <div className="sale-products">
-          {dealProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {loading && <p>Loading featured products...</p>}
+
+          {error && <p>{error}</p>}
+
+          {!loading &&
+            !error &&
+            dealProducts.map((product) => (
+              <ProductCard
+                key={product._id}
+                product={product}
+              />
+            ))}
         </div>
       </section>
 
@@ -90,17 +141,29 @@ function Home() {
       {/* Inquiry */}
       <section className="inquiry-section">
         <div>
-          <h2>An easy way to send requests to all suppliers</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+          <h2>
+            An easy way to send requests to all suppliers
+          </h2>
+
+          <p>
+            Lorem ipsum dolor sit amet, consectetur
+            adipisicing elit.
+          </p>
         </div>
 
         <form className="inquiry-form">
           <h3>Send quote to suppliers</h3>
-          <input type="text" placeholder="What item you need?" />
+
+          <input
+            type="text"
+            placeholder="What item you need?"
+          />
+
           <textarea placeholder="Type more details"></textarea>
 
           <div className="form-row">
             <input type="text" placeholder="Quantity" />
+
             <select>
               <option>Pcs</option>
             </select>
@@ -111,64 +174,78 @@ function Home() {
       </section>
 
       {/* Recommended */}
-  
-<section className="recommended-section">
-  <h2>Recommended items</h2>
+      <section className="recommended-section">
+        <h2>Recommended items</h2>
 
-  <div className="recommended-grid">
-    {recommendedProducts.map((product) => (
-      <div className="recommended-card" key={product.id}>
-        <img src={product.image} alt={product.name} />
-        <h4>${product.price}</h4>
-        <p>{product.name}</p>
+        {loading && <p>Loading recommended products...</p>}
 
-        <Link to={`/details/${product.id}`}>
-          <button className="details-btn">View Details</button>
-        </Link>
-      </div>
-    ))}
-  </div>
-</section>
+        {error && <p>{error}</p>}
 
-     {/* Services */}
-<section className="services-section">
-  <h2>Our Extra Services</h2>
+        <div className="recommended-grid">
+          {!loading &&
+            !error &&
+            recommendedProducts.map((product) => (
+              <div
+                className="recommended-card"
+                key={product._id}
+              >
+                <img
+                  src={product.image}
+                  alt={product.name}
+                />
 
-  <div className="services-grid">
-    {[
-      {
-        icon: "🏭",
-        title: "Source from Industry Hubs",
-      },
-      {
-        icon: "🎨",
-        title: "Customize Your Products",
-      },
-      {
-        icon: "🚚",
-        title: "Fast Shipping",
-      },
-      {
-        icon: "📦",
-        title: "Product Inspection",
-      },
-    ].map((service, index) => (
-      <div className="service-card" key={index}>
-        <div
-          style={{
-            fontSize: "50px",
-            textAlign: "center",
-            marginBottom: "15px",
-          }}
-        >
-          {service.icon}
+                <h4>${product.price}</h4>
+                <p>{product.name}</p>
+
+                <Link to={`/details/${product._id}`}>
+                  <button className="details-btn">
+                    View Details
+                  </button>
+                </Link>
+              </div>
+            ))}
         </div>
+      </section>
 
-        <h4>{service.title}</h4>
-      </div>
-    ))}
-  </div>
-</section>
+      {/* Services */}
+      <section className="services-section">
+        <h2>Our Extra Services</h2>
+
+        <div className="services-grid">
+          {[
+            {
+              icon: "🏭",
+              title: "Source from Industry Hubs",
+            },
+            {
+              icon: "🎨",
+              title: "Customize Your Products",
+            },
+            {
+              icon: "🚚",
+              title: "Fast Shipping",
+            },
+            {
+              icon: "📦",
+              title: "Product Inspection",
+            },
+          ].map((service, index) => (
+            <div className="service-card" key={index}>
+              <div
+                style={{
+                  fontSize: "50px",
+                  textAlign: "center",
+                  marginBottom: "15px",
+                }}
+              >
+                {service.icon}
+              </div>
+
+              <h4>{service.title}</h4>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Suppliers */}
       <section className="country-section">
@@ -196,10 +273,18 @@ function Home() {
       {/* Newsletter */}
       <section className="newsletter-section">
         <h2>Subscribe on our newsletter</h2>
-        <p>Get daily news on upcoming offers from many suppliers all over the world</p>
+
+        <p>
+          Get daily news on upcoming offers from many
+          suppliers all over the world
+        </p>
 
         <div className="newsletter-box">
-          <input type="email" placeholder="Enter your email" />
+          <input
+            type="email"
+            placeholder="Enter your email"
+          />
+
           <button>Subscribe</button>
         </div>
       </section>
