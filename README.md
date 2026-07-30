@@ -6,23 +6,39 @@ A modern React-based Ecommerce Website developed as part of the Frontend Develop
 
 # 📌 Project Overview
 
-ShopEase is a responsive ecommerce website where users can browse products, search and filter items, view product details, and manage their shopping cart. The project uses local JSON data and React Context API for state management.
+ShopEase is a responsive ecommerce website where users can browse products, search and filter items, view product details, manage their shopping cart, authenticate users, and fetch product data from a backend API connected to MongoDB.
 
 ---
 
 # 🚀 Technologies Used
+
+## Frontend
 
 - React JS
 - React Router DOM
 - JavaScript (ES6)
 - HTML5
 - CSS3
-- JSON
-- Context API
+- React Context API
 - localStorage
 - React Toastify
 - Vite
-- Git & GitHub
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Mongoose
+- dotenv
+- CORS
+
+## Tools
+
+- Git
+- GitHub
+- Postman
+
 
 ---
 
@@ -86,32 +102,48 @@ ShopEase is a responsive ecommerce website where users can browse products, sear
 
 ---
 
+# ✅ Week 5 Features
+
+- Backend Integration using Node.js & Express.js
+- MongoDB Atlas Database
+- Product Model using Mongoose
+- REST API Development
+- GET /api/products
+- GET /api/products/:id
+- Frontend Connected with Backend API
+- Products fetched from MongoDB
+- Dynamic Product Details from Backend
+- Loading State Handling
+- Error State Handling
+- Environment Variables using dotenv
+- CORS Configuration
+
+---
+
 # 📂 Folder Structure
 
-```
-src/
+```text
+shopease-ecommerce/
 │
-├── components/
-│   ├── Navbar/
-│   ├── Footer/
-│   ├── Hero/
-│   └── ProductCard/
+├── backend/
+│   ├── models/
+│   ├── routes/
+│   ├── server.js
+│   ├── seedProducts.js
+│   ├── package.json
+│   └── .env
 │
-├── context/
-│   └── CartContext.jsx
+├── public/
+├── screenshots/
+├── src/
+│   ├── components/
+│   ├── context/
+│   ├── pages/
+│   ├── App.jsx
+│   └── main.jsx
 │
-├── data/
-│   └── products.json
-│
-├── pages/
-│   ├── Home/
-│   ├── Products/
-│   ├── ProductDetails/
-│   └── Cart/
-│
-├── App.jsx
-├── main.jsx
-└── index.css
+├── package.json
+└── README.md
 ```
 
 ---
@@ -182,6 +214,67 @@ src/
 ### Order Success
 ![Order Success](screenshots/week4-order-success.png)
 
+# ⚙️ Installation
+
+## Frontend
+
+```bash
+npm install
+npm run dev
+```
+
+Open:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Backend
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+Server runs at:
+
+```
+http://localhost:5000
+```
+
+---
+
+# 🔗 API Endpoints
+
+### Get All Products
+
+```
+GET /api/products
+```
+
+Returns all products from MongoDB.
+
+### Get Single Product
+
+```
+GET /api/products/:id
+```
+
+Returns a single product using MongoDB ObjectId.
+
+# 🔐 Environment Variables
+
+Create a `.env` file inside the backend folder.
+
+Example:
+
+```env
+MONGO_URI=your_mongodb_connection_string
+PORT=5000
+```
 
 # 📚 Learning Outcomes
 
@@ -197,18 +290,24 @@ src/
 - User Authentication
 - Protected Checkout Flow
 - Authentication using localStorage
+- REST API Development
+- Express.js
+- MongoDB Atlas
+- Mongoose
+- Backend Integration
+- Environment Variables
+- CORS
 ---
 
 # 🔮 Future Improvements
 
-- Backend Authentication
+- JWT Authentication
 - Payment Gateway Integration
 - Wishlist
 - User Profile
 - Order History
 - Product Reviews
 - Admin Dashboard
-- Backend & Database Integration
 ---
 
 # 👩‍💻 Author
