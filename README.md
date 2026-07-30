@@ -214,6 +214,29 @@ shopease-ecommerce/
 ### Order Success
 ![Order Success](screenshots/week4-order-success.png)
 
+
+---
+
+## Week 5
+
+### Home Page (Backend API)
+![Home](screenshots/week5-home-page.png)
+
+### Products Page (Backend API)
+![Products](screenshots/week5-products-page.png)
+
+### Product Details (Backend API)
+![Product Details](screenshots/week5-product-details.png)
+
+### API - Get All Products
+![API Products](screenshots/week5-api-products.png)
+
+### API - Get Single Product
+![API Single Product](screenshots/week5-api-single-product.png)
+
+### MongoDB Atlas Database
+![MongoDB](screenshots/week5-mongodb.png)
+
 # ⚙️ Installation
 
 ## Frontend
