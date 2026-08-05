@@ -16,6 +16,8 @@ dist-ssr
 backend/node_modules
 backend/.env
 
+.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

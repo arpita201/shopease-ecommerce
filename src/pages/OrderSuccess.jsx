@@ -1,7 +1,37 @@
 import { Link } from "react-router-dom";
 
 function OrderSuccess() {
-  const savedOrder = JSON.parse(localStorage.getItem("lastOrder"));
+  let savedOrder = null;
+
+  try {
+    const orderFromStorage = localStorage.getItem("lastOrder");
+
+    savedOrder = orderFromStorage
+      ? JSON.parse(orderFromStorage)
+      : null;
+  } catch (error) {
+    console.error("Failed to read order information:", error);
+  }
+
+  const orderId =
+    savedOrder?._id ||
+    savedOrder?.id ||
+    "Not available";
+
+  const customerName =
+    savedOrder?.customer?.fullName ||
+    savedOrder?.customerName ||
+    "Customer";
+
+  const totalAmount = Number(
+    savedOrder?.totalPrice ??
+    savedOrder?.total ??
+    0
+  );
+
+  const orderDate = savedOrder?.createdAt
+    ? new Date(savedOrder.createdAt).toLocaleString()
+    : "Not available";
 
   return (
     <main
@@ -31,26 +61,38 @@ function OrderSuccess() {
 
         <p>Thank you for shopping with ShopEase.</p>
 
-        {savedOrder && (
+        {savedOrder ? (
           <>
             <h3 style={{ color: "#127FFF" }}>
-              Order ID: {savedOrder.id}
+              Order ID: {orderId}
             </h3>
 
             <p>
-              Customer: <strong>{savedOrder.customer.fullName}</strong>
+              Customer:{" "}
+              <strong>{customerName}</strong>
             </p>
 
             <p>
-              Total: <strong>${savedOrder.total.toFixed(2)}</strong>
+              Total:{" "}
+              <strong>
+                ${totalAmount.toFixed(2)}
+              </strong>
             </p>
 
-            <p>Order Date: {savedOrder.createdAt}</p>
+            <p>Status: {savedOrder.status || "Pending"}</p>
+
+            <p>Order Date: {orderDate}</p>
           </>
+        ) : (
+          <p>
+            Order details could not be found, but your order may
+            still have been submitted successfully.
+          </p>
         )}
 
         <Link to="/">
           <button
+            type="button"
             style={{
               marginTop: "20px",
               width: "100%",

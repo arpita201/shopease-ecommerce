@@ -16,6 +16,7 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -28,6 +29,7 @@ function Signup() {
     setErrors((previousErrors) => ({
       ...previousErrors,
       [name]: "",
+      signup: "",
     }));
 
     setSuccessMessage("");
@@ -61,7 +63,7 @@ function Signup() {
     return newErrors;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const validationErrors = validateForm();
@@ -72,30 +74,62 @@ function Signup() {
       return;
     }
 
-    const newUser = {
-      fullName: formData.fullName,
-      email: formData.email,
-      password: formData.password,
-    };
+    try {
+      setIsSubmitting(true);
+      setErrors({});
+      setSuccessMessage("");
 
-    localStorage.setItem(
-      "registeredUser",
-      JSON.stringify(newUser)
-    );
+      const response = await fetch(
+        "http://localhost:5000/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.fullName.trim(),
+            email: formData.email.trim(),
+            password: formData.password,
+          }),
+        }
+      );
 
-    setErrors({});
-    setSuccessMessage("Account created successfully!");
+      const data = await response.json();
 
-    setFormData({
-      fullName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Account creation failed."
+        );
+      }
 
-    setTimeout(() => {
-      navigate("/login");
-    }, 1000);
+      // JWT token and user information save
+      localStorage.setItem("token", data.token);
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+      );
+      localStorage.setItem("isLoggedIn", "true");
+
+      setSuccessMessage("Account created successfully!");
+
+      setFormData({
+        fullName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+
+      setTimeout(() => {
+        navigate("/", { replace: true });
+      }, 1000);
+    } catch (error) {
+      setErrors({
+        signup:
+          error.message || "Something went wrong.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -112,18 +146,29 @@ function Signup() {
           </div>
         )}
 
+        {errors.signup && (
+          <div className="signup-error-message">
+            {errors.signup}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} noValidate>
           <div className="signup-form-group">
-            <label htmlFor="fullName">Full Name</label>
+            <label htmlFor="fullName">
+              Full Name
+            </label>
 
             <input
-              className={errors.fullName ? "input-error" : ""}
+              className={
+                errors.fullName ? "input-error" : ""
+              }
               type="text"
               id="fullName"
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
               placeholder="Enter your full name"
+              autoComplete="name"
             />
 
             {errors.fullName && (
@@ -134,16 +179,21 @@ function Signup() {
           </div>
 
           <div className="signup-form-group">
-            <label htmlFor="email">Email Address</label>
+            <label htmlFor="email">
+              Email Address
+            </label>
 
             <input
-              className={errors.email ? "input-error" : ""}
+              className={
+                errors.email ? "input-error" : ""
+              }
               type="email"
               id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
+              autoComplete="email"
             />
 
             {errors.email && (
@@ -154,7 +204,9 @@ function Signup() {
           </div>
 
           <div className="signup-form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">
+              Password
+            </label>
 
             <div
               className={`signup-password-wrapper ${
@@ -162,18 +214,23 @@ function Signup() {
               }`}
             >
               <input
-                type={showPassword ? "text" : "password"}
+                type={
+                  showPassword ? "text" : "password"
+                }
                 id="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Minimum 8 characters"
+                autoComplete="new-password"
               />
 
               <button
                 type="button"
                 className="signup-password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() =>
+                  setShowPassword(!showPassword)
+                }
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
@@ -193,26 +250,37 @@ function Signup() {
 
             <div
               className={`signup-password-wrapper ${
-                errors.confirmPassword ? "password-error" : ""
+                errors.confirmPassword
+                  ? "password-error"
+                  : ""
               }`}
             >
               <input
-                type={showConfirmPassword ? "text" : "password"}
+                type={
+                  showConfirmPassword
+                    ? "text"
+                    : "password"
+                }
                 id="confirmPassword"
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="Confirm your password"
+                autoComplete="new-password"
               />
 
               <button
                 type="button"
                 className="signup-password-toggle"
                 onClick={() =>
-                  setShowConfirmPassword(!showConfirmPassword)
+                  setShowConfirmPassword(
+                    !showConfirmPassword
+                  )
                 }
               >
-                {showConfirmPassword ? "Hide" : "Show"}
+                {showConfirmPassword
+                  ? "Hide"
+                  : "Show"}
               </button>
             </div>
 
@@ -226,8 +294,11 @@ function Signup() {
           <button
             type="submit"
             className="signup-submit-button"
+            disabled={isSubmitting}
           >
-            Create Account
+            {isSubmitting
+              ? "Creating Account..."
+              : "Create Account"}
           </button>
         </form>
 

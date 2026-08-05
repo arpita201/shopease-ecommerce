@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { toast } from "react-toastify";
 
@@ -11,6 +11,7 @@ function Products() {
   const [error, setError] = useState("");
 
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -37,6 +38,24 @@ function Products() {
 
     fetchProducts();
   }, []);
+
+  const handleAddToCart = (product) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      toast.info("Please login to add products to your cart.");
+
+      navigate("/login", {
+        state: { from: "/products" },
+      });
+
+      return;
+    }
+
+    addToCart(product);
+
+    toast.success(`${product.name} added to cart!`);
+  };
 
   const categories = [
     "All",
@@ -104,12 +123,16 @@ function Products() {
             type="text"
             placeholder="Search products by name..."
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={(event) =>
+              setSearchText(event.target.value)
+            }
           />
 
           <select
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={(event) =>
+              setSelectedCategory(event.target.value)
+            }
           >
             {categories.map((category) => (
               <option key={category} value={category}>
@@ -124,9 +147,15 @@ function Products() {
         <div className="listing-products">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <div className="listing-card" key={product._id}>
+              <div
+                className="listing-card"
+                key={product._id}
+              >
                 <div className="listing-img">
-                  <img src={product.image} alt={product.name} />
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                  />
                 </div>
 
                 <div>
@@ -134,28 +163,31 @@ function Products() {
                   <h2>${product.price}</h2>
 
                   <p>
-                    <strong>Category:</strong> {product.category}
+                    <strong>Category:</strong>{" "}
+                    {product.category}
                   </p>
 
                   <p>{product.description}</p>
 
                   <p>
                     <strong>Status:</strong>{" "}
-                    {product.stock ? "In Stock" : "Out of Stock"}
+                    {product.stock
+                      ? "In Stock"
+                      : "Out of Stock"}
                   </p>
 
                   <Link to={`/details/${product._id}`}>
-                    <button>View Details</button>
+                    <button type="button">
+                      View Details
+                    </button>
                   </Link>
 
                   <button
+                    type="button"
                     style={{ marginLeft: "10px" }}
-                    onClick={() => {
-                      addToCart(product);
-                      toast.success(
-                        `${product.name} added to cart!`
-                      );
-                    }}
+                    onClick={() =>
+                      handleAddToCart(product)
+                    }
                     disabled={!product.stock}
                   >
                     {product.stock

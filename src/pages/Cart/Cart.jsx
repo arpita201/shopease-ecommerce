@@ -18,9 +18,9 @@ function Cart() {
   const finalTotal = cartTotal - discount + tax;
 
   const handleCheckout = () => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    const token = localStorage.getItem("token");
 
-    if (isLoggedIn === "true") {
+    if (token) {
       navigate("/checkout");
     } else {
       navigate("/login", {
@@ -39,51 +39,82 @@ function Cart() {
           <p>Add some products to continue shopping.</p>
 
           <Link to="/products">
-            <button>Go to Products</button>
+            <button type="button">Go to Products</button>
           </Link>
         </section>
       ) : (
         <section className="cart-layout">
           <div className="cart-items">
-            {cartItems.map((item) => (
-              <div className="cart-item" key={item.id}>
-                <div className="cart-img">
-                  <img src={item.image} alt={item.name} />
-                </div>
+            {cartItems.map((item) => {
+              const itemId = item._id || item.id;
 
-                <div className="cart-item-info">
-                  <h3>{item.name}</h3>
-                  <p>Category: {item.category}</p>
-                  <p>Seller: ShopEase Store</p>
+              return (
+                <div className="cart-item" key={itemId}>
+                  <div className="cart-img">
+                    <img
+                      src={item.image}
+                      alt={item.name || item.title}
+                    />
+                  </div>
 
-                  <button onClick={() => removeFromCart(item.id)}>
-                    Remove
-                  </button>
-                </div>
+                  <div className="cart-item-info">
+                    <h3>{item.name || item.title}</h3>
+                    <p>Category: {item.category}</p>
+                    <p>Seller: ShopEase Store</p>
 
-                <div className="cart-item-controls">
-                  <h3>${(item.price * item.quantity).toFixed(2)}</h3>
-
-                  <div className="quantity-controls">
-                    <button onClick={() => decreaseQuantity(item.id)}>
-                      −
-                    </button>
-
-                    <span>{item.quantity}</span>
-
-                    <button onClick={() => increaseQuantity(item.id)}>
-                      +
+                    <button
+                      type="button"
+                      onClick={() => removeFromCart(itemId)}
+                    >
+                      Remove
                     </button>
                   </div>
+
+                  <div className="cart-item-controls">
+                    <h3>
+                      $
+                      {(
+                        Number(item.price) *
+                        Number(item.quantity)
+                      ).toFixed(2)}
+                    </h3>
+
+                    <div className="quantity-controls">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          decreaseQuantity(itemId)
+                        }
+                      >
+                        −
+                      </button>
+
+                      <span>{item.quantity}</span>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          increaseQuantity(itemId)
+                        }
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <aside className="summary-card">
             <h3>Have a coupon?</h3>
-            <input type="text" placeholder="Add coupon" />
-            <button>Apply</button>
+
+            <input
+              type="text"
+              placeholder="Add coupon"
+            />
+
+            <button type="button">Apply</button>
 
             <hr />
 

@@ -16,6 +16,7 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -52,7 +53,7 @@ function Login() {
     return newErrors;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const validationErrors = validateForm();
@@ -63,41 +64,47 @@ function Login() {
       return;
     }
 
-    const savedUser = JSON.parse(
-      localStorage.getItem("registeredUser")
-    );
-
-    if (!savedUser) {
-      setErrors({
-        login: "No account found. Please create an account first.",
-      });
+    try {
+      setIsSubmitting(true);
+      setErrors({});
       setSuccessMessage("");
-      return;
-    }
 
-    const emailMatches =
-      formData.email.trim().toLowerCase() ===
-      savedUser.email.trim().toLowerCase();
+      const response = await fetch(
+        "http://localhost:5000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: formData.email.trim(),
+            password: formData.password,
+          }),
+        }
+      );
 
-    const passwordMatches =
-      formData.password === savedUser.password;
+      const data = await response.json();
 
-    if (!emailMatches || !passwordMatches) {
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed.");
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("isLoggedIn", "true");
+
+      setSuccessMessage("Login successful!");
+
+      setTimeout(() => {
+        navigate(redirectPath, { replace: true });
+      }, 1000);
+    } catch (error) {
       setErrors({
-        login: "Incorrect email or password.",
+        login: error.message || "Something went wrong.",
       });
-      setSuccessMessage("");
-      return;
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setErrors({});
-    setSuccessMessage("Login successful!");
-
-    localStorage.setItem("isLoggedIn", "true");
-
-    setTimeout(() => {
-      navigate(redirectPath, { replace: true });
-    }, 1000);
   };
 
   return (
@@ -132,6 +139,7 @@ function Login() {
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
+              autoComplete="email"
             />
 
             {errors.email && (
@@ -156,6 +164,7 @@ function Login() {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Enter your password"
+                autoComplete="current-password"
               />
 
               <button
@@ -174,8 +183,12 @@ function Login() {
             )}
           </div>
 
-          <button type="submit" className="login-submit-button">
-            Login
+          <button
+            type="submit"
+            className="login-submit-button"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Logging in..." : "Login"}
           </button>
         </form>
 

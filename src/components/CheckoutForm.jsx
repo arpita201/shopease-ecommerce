@@ -4,8 +4,8 @@ import { useCart } from "../context/CartContext";
 import "../styles/Checkout.css";
 
 function CheckoutForm() {
-const { cartItems, cartTotal, clearCart } = useCart();
-const navigate = useNavigate();
+  const { cartItems, cartTotal, clearCart } = useCart();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -18,6 +18,7 @@ const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -30,6 +31,8 @@ const navigate = useNavigate();
     setErrors((previousErrors) => ({
       ...previousErrors,
       [name]: "",
+      cart: "",
+      order: "",
     }));
 
     setSuccess("");
@@ -71,7 +74,7 @@ const navigate = useNavigate();
     return newErrors;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const validationErrors = validateForm();
@@ -83,41 +86,115 @@ const navigate = useNavigate();
     }
 
     if (cartItems.length === 0) {
-      setSuccess("");
       setErrors({
         cart: "Your cart is empty. Please add a product before checkout.",
+      });
+      setSuccess("");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login", {
+        state: { from: "/checkout" },
       });
       return;
     }
 
-   setErrors({});
+    try {
+      setIsSubmitting(true);
+      setErrors({});
+      setSuccess("");
 
-const orderData = {
-  id: `SE-${Date.now()}`,
-  customer: formData,
-  items: cartItems,
-  total: cartTotal,
-  createdAt: new Date().toLocaleString(),
-};
+      const orderItems = cartItems.map((item) => ({
+        productId: item._id || item.id,
+        name: item.name || item.title,
+        price: Number(item.price),
+        quantity: Number(item.quantity),
+        image: item.image || "",
+      }));
 
-localStorage.setItem("lastOrder", JSON.stringify(orderData));
+      const response = await fetch(
+        "http://localhost:5000/api/orders",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            customerName: formData.fullName.trim(),
+            customerEmail: formData.email.trim(),
+            items: orderItems,
+            totalPrice: Number(cartTotal),
+          }),
+        }
+      );
 
-clearCart();
-navigate("/success");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Failed to place the order."
+        );
+      }
+
+      const orderData = {
+        ...data.order,
+        customer: formData,
+      };
+
+      localStorage.setItem(
+        "lastOrder",
+        JSON.stringify(orderData)
+      );
+
+      setSuccess("Order placed successfully!");
+
+      clearCart();
+
+      setTimeout(() => {
+        navigate("/success", {
+          state: {
+            order: orderData,
+          },
+        });
+      }, 800);
+    } catch (error) {
+      setErrors({
+        order:
+          error.message ||
+          "Something went wrong while placing the order.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <main className="checkout-container">
       <section className="checkout-form">
         <h2>Checkout</h2>
+
         <p className="checkout-subtitle">
           Enter your shipping details to complete your order.
         </p>
 
-        {success && <div className="success-box">{success}</div>}
+        {success && (
+          <div className="success-box">{success}</div>
+        )}
 
         {errors.cart && (
-          <div className="checkout-cart-error">{errors.cart}</div>
+          <div className="checkout-cart-error">
+            {errors.cart}
+          </div>
+        )}
+
+        {errors.order && (
+          <div className="checkout-cart-error">
+            {errors.order}
+          </div>
         )}
 
         <form onSubmit={handleSubmit} noValidate>
@@ -125,64 +202,92 @@ navigate("/success");
             <label htmlFor="fullName">Full Name</label>
 
             <input
-              className={errors.fullName ? "checkout-input-error" : ""}
+              className={
+                errors.fullName
+                  ? "checkout-input-error"
+                  : ""
+              }
               type="text"
               id="fullName"
               name="fullName"
               placeholder="Enter your full name"
               value={formData.fullName}
               onChange={handleChange}
+              autoComplete="name"
             />
 
-            {errors.fullName && <small>{errors.fullName}</small>}
+            {errors.fullName && (
+              <small>{errors.fullName}</small>
+            )}
           </div>
 
           <div className="checkout-form-group">
             <label htmlFor="email">Email Address</label>
 
             <input
-              className={errors.email ? "checkout-input-error" : ""}
+              className={
+                errors.email
+                  ? "checkout-input-error"
+                  : ""
+              }
               type="email"
               id="email"
               name="email"
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
+              autoComplete="email"
             />
 
-            {errors.email && <small>{errors.email}</small>}
+            {errors.email && (
+              <small>{errors.email}</small>
+            )}
           </div>
 
           <div className="checkout-form-group">
             <label htmlFor="phone">Phone Number</label>
 
             <input
-              className={errors.phone ? "checkout-input-error" : ""}
+              className={
+                errors.phone
+                  ? "checkout-input-error"
+                  : ""
+              }
               type="tel"
               id="phone"
               name="phone"
               placeholder="Enter your phone number"
               value={formData.phone}
               onChange={handleChange}
+              autoComplete="tel"
             />
 
-            {errors.phone && <small>{errors.phone}</small>}
+            {errors.phone && (
+              <small>{errors.phone}</small>
+            )}
           </div>
 
           <div className="checkout-form-group">
             <label htmlFor="address">Address</label>
 
             <input
-              className={errors.address ? "checkout-input-error" : ""}
+              className={
+                errors.address
+                  ? "checkout-input-error"
+                  : ""
+              }
               type="text"
               id="address"
               name="address"
               placeholder="Enter your address"
               value={formData.address}
               onChange={handleChange}
+              autoComplete="street-address"
             />
 
-            {errors.address && <small>{errors.address}</small>}
+            {errors.address && (
+              <small>{errors.address}</small>
+            )}
           </div>
 
           <div className="checkout-row">
@@ -190,37 +295,57 @@ navigate("/success");
               <label htmlFor="city">City</label>
 
               <input
-                className={errors.city ? "checkout-input-error" : ""}
+                className={
+                  errors.city
+                    ? "checkout-input-error"
+                    : ""
+                }
                 type="text"
                 id="city"
                 name="city"
                 placeholder="Enter your city"
                 value={formData.city}
                 onChange={handleChange}
+                autoComplete="address-level2"
               />
 
-              {errors.city && <small>{errors.city}</small>}
+              {errors.city && (
+                <small>{errors.city}</small>
+              )}
             </div>
 
             <div className="checkout-form-group">
               <label htmlFor="zipCode">ZIP Code</label>
 
               <input
-                className={errors.zipCode ? "checkout-input-error" : ""}
+                className={
+                  errors.zipCode
+                    ? "checkout-input-error"
+                    : ""
+                }
                 type="text"
                 id="zipCode"
                 name="zipCode"
                 placeholder="Enter ZIP code"
                 value={formData.zipCode}
                 onChange={handleChange}
+                autoComplete="postal-code"
               />
 
-              {errors.zipCode && <small>{errors.zipCode}</small>}
+              {errors.zipCode && (
+                <small>{errors.zipCode}</small>
+              )}
             </div>
           </div>
 
-          <button type="submit" className="place-order-button">
-            Place Order
+          <button
+            type="submit"
+            className="place-order-button"
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? "Placing Order..."
+              : "Place Order"}
           </button>
         </form>
       </section>
@@ -229,12 +354,17 @@ navigate("/success");
         <h2>Order Summary</h2>
 
         {cartItems.length === 0 ? (
-          <p className="empty-summary">Your cart is empty.</p>
+          <p className="empty-summary">
+            Your cart is empty.
+          </p>
         ) : (
           <>
             <div className="summary-items">
               {cartItems.map((item) => (
-                <div key={item.id} className="summary-item">
+                <div
+                  key={item._id || item.id}
+                  className="summary-item"
+                >
                   <div className="summary-product-info">
                     {item.image && (
                       <img
@@ -251,7 +381,10 @@ navigate("/success");
                   </div>
 
                   <span>
-                    ${(item.price * item.quantity).toFixed(2)}
+                    $
+                    {(
+                      item.price * item.quantity
+                    ).toFixed(2)}
                   </span>
                 </div>
               ))}
@@ -259,7 +392,9 @@ navigate("/success");
 
             <div className="summary-total">
               <span>Total</span>
-              <strong>${cartTotal.toFixed(2)}</strong>
+              <strong>
+                ${cartTotal.toFixed(2)}
+              </strong>
             </div>
           </>
         )}

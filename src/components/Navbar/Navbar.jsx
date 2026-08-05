@@ -5,12 +5,15 @@ function Navbar() {
   const navigate = useNavigate();
   const { cartCount } = useCart();
 
-  const isLoggedIn =
-    localStorage.getItem("isLoggedIn") === "true";
+  const token = localStorage.getItem("token");
+  const isLoggedIn = Boolean(token);
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     localStorage.removeItem("isLoggedIn");
-    navigate("/");
+
+    navigate("/", { replace: true });
     window.location.reload();
   };
 
@@ -68,55 +71,59 @@ function Navbar() {
           Products
         </NavLink>
 
-        <NavLink to="/login" style={navStyle}>
-          Login
-        </NavLink>
+        {!isLoggedIn && (
+          <>
+            <NavLink to="/login" style={navStyle}>
+              Login
+            </NavLink>
 
-        <NavLink to="/signup" style={navStyle}>
-          Signup
-        </NavLink>
-
-        <NavLink
-          to="/cart"
-          style={navStyle}
-        >
-          Cart
-          {cartCount > 0 && (
-            <span
-              style={{
-                marginLeft: "6px",
-                background: "#fff",
-                color: "#127FFF",
-                borderRadius: "50%",
-                minWidth: "20px",
-                height: "20px",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "12px",
-                fontWeight: "700",
-              }}
-            >
-              {cartCount}
-            </span>
-          )}
-        </NavLink>
+            <NavLink to="/signup" style={navStyle}>
+              Signup
+            </NavLink>
+          </>
+        )}
 
         {isLoggedIn && (
-          <button
-            onClick={handleLogout}
-            style={{
-              border: "none",
-              background: "#dc3545",
-              color: "#fff",
-              padding: "8px 16px",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontWeight: "600",
-            }}
-          >
-            Logout
-          </button>
+          <>
+            <NavLink to="/cart" style={navStyle}>
+              Cart
+              {cartCount > 0 && (
+                <span
+                  style={{
+                    marginLeft: "6px",
+                    background: "#fff",
+                    color: "#127FFF",
+                    borderRadius: "50%",
+                    minWidth: "20px",
+                    height: "20px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "12px",
+                    fontWeight: "700",
+                  }}
+                >
+                  {cartCount}
+                </span>
+              )}
+            </NavLink>
+
+            <button
+              type="button"
+              onClick={handleLogout}
+              style={{
+                border: "none",
+                background: "#dc3545",
+                color: "#fff",
+                padding: "8px 16px",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontWeight: "600",
+              }}
+            >
+              Logout
+            </button>
+          </>
         )}
       </div>
     </nav>

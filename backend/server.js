@@ -1,3 +1,4 @@
+const authRoutes = require("./routes/authRoutes");
 const dns = require("node:dns");
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 const express = require("express");
@@ -6,6 +7,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const productRoutes = require("./routes/productRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 
@@ -20,6 +22,8 @@ app.get("/", (req, res) => {
 
 // Product routes
 app.use("/api/products", productRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/orders", orderRoutes);
 
 const PORT = process.env.PORT || 5000;
 
