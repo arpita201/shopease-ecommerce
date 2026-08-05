@@ -1,8 +1,14 @@
 # 🛒 ShopEase Ecommerce Website
 
-A modern React-based Ecommerce Website developed as part of the Frontend Development Internship. This project was built incrementally over multiple weeks by adding new features and improving the application.
+ShopEase is a responsive full-stack ecommerce website where users can browse products, search and filter items, view product details, manage their shopping cart, register and log in, and place orders through a backend API connected to MongoDB Atlas.
 
 ---
+
+# 🌐 Live Demo
+
+- **Frontend:** https://shopease-ecommerce-three.vercel.app
+- **Backend:** https://shopease-backend-ipy9.onrender.com
+- **GitHub:** https://github.com/arpita201/shopease-ecommerce
 
 # 📌 Project Overview
 
@@ -119,6 +125,20 @@ ShopEase is a responsive ecommerce website where users can browse products, sear
 - CORS Configuration
 
 ---
+
+# ✅ Week 6 Features
+
+- User Registration & Login
+- Authentication API Integration
+- Protected Routes
+- Login Required before Checkout
+- Order Placement using Backend API
+- Orders Stored in MongoDB Atlas
+- Order Confirmation Page
+- MongoDB Orders Collection
+- Live Backend Deployment on Render
+- Live Frontend Deployment on Vercel
+- Full Stack Ecommerce Deployment
 
 # 📂 Folder Structure
 
@@ -237,7 +257,69 @@ shopease-ecommerce/
 ### MongoDB Atlas Database
 ![MongoDB](screenshots/week5-mongodb.png)
 
+---
+
+## Week 6
+
+### Home Page
+![Home](screenshots/week6-home-page.png)
+
+### Products Page
+![Products](screenshots/week6-products-page.png)
+
+### Search Feature
+![Search](screenshots/week6-search-feature.png)
+
+### Category Filter
+![Category](screenshots/week6-category-filter.png)
+
+### Product Details
+![Product Details](screenshots/week6-product-details.png)
+
+### Login Page
+![Login](screenshots/week6-login-page.png)
+
+### Signup Page
+![Signup](screenshots/week6-signup-page.png)
+
+### Shopping Cart
+![Cart](screenshots/week6-cart-page.png)
+
+### Checkout Page
+![Checkout](screenshots/week6-checkout-page.png)
+
+### Order Success
+![Order Success](screenshots/week6-order-success.png)
+
+### Protected Route
+![Protected Route](screenshots/week6-protected-route.png)
+
+### Products API
+![Products API](screenshots/week6-api-products.png)
+
+### MongoDB Products
+![MongoDB Products](screenshots/week6-mongodb-products.png)
+
+### MongoDB Orders
+![MongoDB Orders](screenshots/week6-mongodb-orders.png)
+
+### Render Backend
+![Render Backend](screenshots/week6-render-backend.png)
+
+### Vercel Deployment
+![Vercel](screenshots/week6-vercel-live.png)
+
+### GitHub Repository
+![GitHub](screenshots/week6-github.png)
+
 # ⚙️ Installation
+
+## Clone Repository
+
+```bash
+git clone https://github.com/arpita201/shopease-ecommerce
+cd shopease-ecommerce
+```
 
 ## Frontend
 
@@ -248,11 +330,9 @@ npm run dev
 
 Open:
 
-```
+```text
 http://localhost:5173
 ```
-
----
 
 ## Backend
 
@@ -262,10 +342,10 @@ npm install
 npm run dev
 ```
 
-Server runs at:
+Server runs locally:
 
-```
-https://shopease-backend-ipy9.onrender.com
+```text
+http://localhost:5000
 ```
 
 ---
@@ -274,7 +354,7 @@ https://shopease-backend-ipy9.onrender.com
 
 ### Get All Products
 
-```
+```http
 GET /api/products
 ```
 
@@ -282,11 +362,21 @@ Returns all products from MongoDB.
 
 ### Get Single Product
 
-```
+```http
 GET /api/products/:id
 ```
 
 Returns a single product using MongoDB ObjectId.
+
+### Create Order
+
+```http
+POST /api/orders
+```
+
+Creates a new order and stores it in MongoDB.
+
+---
 
 # 🔐 Environment Variables
 
@@ -295,9 +385,12 @@ Create a `.env` file inside the backend folder.
 Example:
 
 ```env
-MONGO_URI=your_mongodb_connection_string
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
 PORT=5000
 ```
+
+---
 
 # 📚 Learning Outcomes
 
@@ -312,7 +405,6 @@ PORT=5000
 - Form Validation
 - User Authentication
 - Protected Checkout Flow
-- Authentication using localStorage
 - REST API Development
 - Express.js
 - MongoDB Atlas
@@ -320,28 +412,35 @@ PORT=5000
 - Backend Integration
 - Environment Variables
 - CORS
+- Authentication Flow
+- Protected Routes
+- REST API Integration
+- Order Management
+- MongoDB CRUD Operations
+- Backend Deployment using Render
+- Frontend Deployment using Vercel
+- Full Stack Application Development
+
 ---
 
 # 🔮 Future Improvements
 
-- JWT Authentication
-- Payment Gateway Integration
-- Wishlist
-- User Profile
-- Order History
-- Product Reviews
+- User Dashboard
 - Admin Dashboard
+- Payment Gateway (Stripe)
+- Product Reviews
+- Wishlist
+- Order Tracking
+- Image Upload
+- Inventory Management
+
 ---
 
 # 👩‍💻 Author
 
 **Arpita Saha**
 
-
-
-GitHub:
-https://github.com/arpita201
-
----
-
+- GitHub: https://github.com/arpita201
+- Frontend: https://shopease-ecommerce-three.vercel.app
+- Backend: https://shopease-backend-ipy9.onrender.com
 
