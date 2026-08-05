@@ -21,7 +21,7 @@ function ProductDetails() {
         console.log("ID:", id);
 
 const response = await fetch(
-  `http://localhost:5000/api/products/${id}`
+  `https://shopease-backend-ipy9.onrender.com/api/products/${id}`
 );
 
        

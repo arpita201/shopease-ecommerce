@@ -265,7 +265,7 @@ npm run dev
 Server runs at:
 
 ```
-http://localhost:5000
+https://shopease-backend-ipy9.onrender.com
 ```
 
 ---
