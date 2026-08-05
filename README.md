@@ -8,6 +8,7 @@ ShopEase is a responsive full-stack ecommerce website where users can browse pro
 
 - **Frontend:** https://shopease-ecommerce-three.vercel.app
 - **Backend:** https://shopease-backend-ipy9.onrender.com
+ - Products API: https://shopease-backend-ipy9.onrender.com/api/products
 - **GitHub:** https://github.com/arpita201/shopease-ecommerce
 
 # 📌 Project Overview
