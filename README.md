@@ -32,10 +32,13 @@ ShopEase is a responsive ecommerce website where users can browse products, sear
 
 ## Backend
 
+
 - Node.js
 - Express.js
 - MongoDB Atlas
 - Mongoose
+- bcryptjs
+- JSON Web Token (JWT)
 - dotenv
 - CORS
 
@@ -139,6 +142,8 @@ ShopEase is a responsive ecommerce website where users can browse products, sear
 - Live Backend Deployment on Render
 - Live Frontend Deployment on Vercel
 - Full Stack Ecommerce Deployment
+
+---
 
 # 📂 Folder Structure
 
@@ -306,7 +311,7 @@ shopease-ecommerce/
 ### Render Backend
 ![Render Backend](screenshots/week6-render-backend.png)
 
-### Vercel Deployment
+### Vercel Live Website
 ![Vercel](screenshots/week6-vercel-live.png)
 
 ### GitHub Repository
@@ -367,6 +372,22 @@ GET /api/products/:id
 ```
 
 Returns a single product using MongoDB ObjectId.
+
+### Register User
+
+```http
+POST /api/auth/register
+```
+
+Registers a new user, hashes the password, and returns a JWT token.
+
+### Login User
+
+```http
+POST /api/auth/login
+```
+
+Authenticates the user and returns a JWT token.
 
 ### Create Order
 
